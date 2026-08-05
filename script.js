@@ -12,7 +12,7 @@
     if (mauro) {
       const name = mauro.querySelector('h3');
       const description = mauro.querySelector('p');
-      if (name) name.textContent = 'Mauro Vick';
+      if (name) name.textContent = 'Mauro Veeck';
       if (description) description.innerHTML = 'Autor de <em>Justa Vingança</em>';
     }
 
