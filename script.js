@@ -1,4 +1,46 @@
 (() => {
+  function applyRequestedCorrections() {
+    const bianca = document.querySelector('img[src*="avatar-bianca"]')?.closest('.testimonial-person');
+    if (bianca) {
+      const name = bianca.querySelector('h3');
+      const description = bianca.querySelector('p');
+      if (name) name.textContent = 'Bianca Victória';
+      if (description) description.innerHTML = 'Autora de <em>A Colisão das Luas</em> e designer';
+    }
+
+    const mauro = document.querySelector('img[src*="avatar-mauro"]')?.closest('.testimonial-person');
+    if (mauro) {
+      const name = mauro.querySelector('h3');
+      const description = mauro.querySelector('p');
+      if (name) name.textContent = 'Mauro Vick';
+      if (description) description.innerHTML = 'Autor de <em>Justa Vingança</em>';
+    }
+
+    if (!document.getElementById('headline-spacing-fix')) {
+      const style = document.createElement('style');
+      style.id = 'headline-spacing-fix';
+      style.textContent = `
+        .hero h1 {
+          line-height: .98;
+        }
+
+        @media (max-width: 700px) {
+          .hero h1 {
+            line-height: 1.04 !important;
+            letter-spacing: -.025em;
+          }
+
+          .hero h1 em {
+            margin-top: .08em;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  applyRequestedCorrections();
+
   const menuButton = document.querySelector('.menu-toggle');
   const menu = document.querySelector('.main-nav');
 
