@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d0c0a">
+  <meta name="robots" content="noindex,follow">
+  <title>Formulário editorial — Saymon César</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="formulario.css?v=20260805a">
+</head>
+<body>
+  <header class="form-header">
+    <a class="brand" href="index.html" aria-label="Voltar para o site do Editor Saymon César"><svg viewBox="0 0 76 66" aria-hidden="true"><path d="M51 13c-4-6-10-9-18-9C22 4 14 11 14 21c0 9 6 14 16 17l9 3c5 2 8 4 8 8 0 6-5 10-13 10-8 0-14-4-18-11"/><path d="M58 12c-6-5-12-7-19-7M56 53c-5 6-12 9-21 9"/></svg><span><strong>Saymon César</strong><small>EDITOR</small></span></a>
+    <a class="back" href="index.html">← Voltar ao site</a>
+  </header>
+
+  <main>
+    <section class="form-intro"><span>AVALIAÇÃO EDITORIAL INICIAL</span><h1>Conte em que estágio está o seu livro.</h1><p>As respostas abaixo permitem entender o que já foi realizado, quais etapas ainda faltam e qual é o caminho mais coerente para a publicação. Ao final, anexe o primeiro capítulo ou o original.</p></section>
+
+    <form id="editorial-form" novalidate>
+      <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <fieldset>
+        <legend>1. Seus dados</legend>
+        <div class="grid two">
+          <label>Nome completo<input type="text" name="nome" required autocomplete="name"></label>
+          <label>WhatsApp<input type="tel" name="whatsapp" required autocomplete="tel" placeholder="(47) 99999-9999"></label>
+          <label>E-mail<input type="email" name="email" required autocomplete="email"></label>
+          <label>Título da obra<input type="text" name="titulo" required placeholder="Mesmo que seja provisório"></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Sobre a obra</legend>
+        <div class="grid two">
+          <label>Tipo de livro<select name="tipo" required><option value="">Selecione</option><option>Ficção</option><option>Não ficção</option></select></label>
+          <label>Gênero principal<input type="text" name="genero" required placeholder="Ex.: fantasia, romance, biografia, negócios"></label>
+          <label>Estágio atual<select name="estagio" required><option value="">Selecione</option><option>Estou começando a escrever</option><option>O livro está em desenvolvimento</option><option>O original está concluído</option><option>O livro está pronto, mas ainda não foi publicado</option><option>O livro já foi publicado e quero melhorá-lo</option></select></label>
+          <label>Modelo de publicação desejado<select name="modelo_publicacao" required><option value="">Selecione</option><option>Publicação independente</option><option>Publicação por editora</option><option>Estou aberto às duas possibilidades</option></select></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="services-block">
+        <legend>3. Quais serviços o seu livro já possui?</legend>
+        <p class="helper">Marque tudo o que já foi concluído.</p>
+        <div class="checks">
+          <label><input type="checkbox" name="servicos" value="Registro de direitos autorais">Registro de direitos autorais</label>
+          <label><input type="checkbox" name="servicos" value="ISBN">ISBN</label>
+          <label><input type="checkbox" name="servicos" value="Ficha catalográfica">Ficha catalográfica</label>
+          <label><input type="checkbox" name="servicos" value="Código de barras">Código de barras</label>
+          <label><input type="checkbox" name="servicos" value="Análise crítica ou editorial">Análise crítica ou editorial</label>
+          <label><input type="checkbox" name="servicos" value="Capa">Capa</label>
+          <label><input type="checkbox" name="servicos" value="Diagramação">Diagramação</label>
+          <label><input type="checkbox" name="servicos" value="Revisão ortográfica e gramatical">Revisão ortográfica e gramatical</label>
+          <label><input type="checkbox" name="servicos" value="Copidesque">Copidesque</label>
+          <label><input type="checkbox" name="servicos" value="Planejamento de marketing">Planejamento de marketing</label>
+          <label><input type="checkbox" name="servicos" value="Impressão ou logística">Impressão ou logística</label>
+          <label><input id="no-services" type="checkbox" name="servicos" value="Nenhum serviço realizado">Nenhum serviço realizado</label>
+        </div>
+        <p id="services-error" class="field-error">Selecione pelo menos uma opção.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Objetivo na literatura</legend>
+        <div class="radio-list">
+          <label><input type="radio" name="objetivo_literario" value="Realizar o sonho de publicar" required>Quero realizar o sonho de publicar meu livro.</label>
+          <label><input type="radio" name="objetivo_literario" value="Publicar e alcançar muitos leitores">Quero publicar e alcançar uma quantidade significativa de leitores.</label>
+          <label><input type="radio" name="objetivo_literario" value="Construir carreira de autor">Quero construir uma carreira de autor e desenvolver novos projetos.</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Observações e arquivo</legend>
+        <label>O que você considera importante eu saber sobre a obra?<textarea name="observacoes" rows="6" placeholder="Contexto, dificuldades, prazo, publicação anterior ou qualquer informação relevante."></textarea></label>
+        <div class="file-block"><label class="file-picker" for="editorial-file"><strong>Anexar primeiro capítulo ou original</strong><span>PDF, DOC, DOCX, ODT ou RTF — até 10 MB</span><em id="file-picker-text">Nenhum arquivo selecionado</em></label><input id="editorial-file" type="file" name="arquivo" accept=".pdf,.doc,.docx,.odt,.rtf" required></div>
+      </fieldset>
+
+      <label class="consent"><input type="checkbox" required>Autorizo o envio dos dados e do arquivo para avaliação editorial e contato profissional.</label>
+      <button type="submit">Enviar para avaliação editorial</button>
+      <div id="submission-status" class="submission-status" role="status" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <footer>© <span id="year"></span> Saymon César — Editor</footer>
+  <script src="form-config.js?v=20260805a"></script>
+  <script src="formulario.js?v=20260805a"></script>
+</body>
+</html>
