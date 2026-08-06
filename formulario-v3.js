@@ -10,7 +10,6 @@
     ? config.acceptedExtensions.map((item) => String(item).toLowerCase())
     : ['pdf', 'doc', 'docx', 'odt', 'rtf'];
 
-  const CHUNK_SIZE = 1536 * 1024;
   const startedAt = Date.now();
   const fileInput = document.getElementById('editorial-file');
   const fileText = document.getElementById('file-picker-text');
@@ -95,7 +94,9 @@
 
       const data = new FormData(form);
       const base64 = stripDataUrlPrefix(await readFileAsDataUrl(file));
-      const totalChunks = Math.ceil(base64.length / CHUNK_SIZE);
+      const targetChunks = chooseTargetChunks(file.size);
+      const chunkSize = Math.ceil(base64.length / targetChunks);
+      const totalChunks = Math.ceil(base64.length / chunkSize);
       const submissionId = window.crypto?.randomUUID?.()
         || `envio-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
@@ -134,7 +135,7 @@
       }, `init:${submissionId}`);
 
       for (let index = 0; index < totalChunks; index++) {
-        const chunk = base64.slice(index * CHUNK_SIZE, (index + 1) * CHUNK_SIZE);
+        const chunk = base64.slice(index * chunkSize, (index + 1) * chunkSize);
         const percent = Math.min(90, Math.round(((index + 1) / totalChunks) * 90));
         setStatus(`Enviando seu arquivo… ${percent}%`, 'loading');
 
@@ -269,6 +270,13 @@
     if (!status) return;
     status.textContent = message;
     status.className = `submission-status${message ? ' visible' : ''}${type ? ` ${type}` : ''}`;
+  }
+
+  function chooseTargetChunks(fileSize) {
+    const megabyte = 1024 * 1024;
+    if (fileSize <= 4 * megabyte) return 2;
+    if (fileSize <= 7 * megabyte) return 3;
+    return 4;
   }
 
   function getExtension(name) {
