@@ -10,7 +10,7 @@
     ? config.acceptedExtensions.map((item) => String(item).toLowerCase())
     : ['pdf', 'doc', 'docx', 'odt', 'rtf'];
 
-  const CHUNK_SIZE = 180 * 1024;
+  const CHUNK_SIZE = 420 * 1024;
   const startedAt = Date.now();
   const fileInput = document.getElementById('editorial-file');
   const fileText = document.getElementById('file-picker-text');
@@ -91,7 +91,7 @@
     try {
       form.classList.add('is-submitting');
       submitButton.disabled = true;
-      setStatus('Preparando o documento…', 'loading');
+      setStatus('Preparando o envio…', 'loading');
 
       const data = new FormData(form);
       const base64 = stripDataUrlPrefix(await readFileAsDataUrl(file));
@@ -126,7 +126,7 @@
         }
       };
 
-      setStatus('Iniciando o envio seguro para o Google Drive…', 'loading');
+      setStatus('Enviando seu arquivo… 0%', 'loading');
       await postAndConfirm({
         action: 'init',
         submissionId,
@@ -135,11 +135,8 @@
 
       for (let index = 0; index < totalChunks; index++) {
         const chunk = base64.slice(index * CHUNK_SIZE, (index + 1) * CHUNK_SIZE);
-        const percent = Math.round(((index + 1) / totalChunks) * 88);
-        setStatus(
-          `Enviando o documento: parte ${index + 1} de ${totalChunks} (${percent}%)…`,
-          'loading'
-        );
+        const percent = Math.min(90, Math.round(((index + 1) / totalChunks) * 90));
+        setStatus(`Enviando seu arquivo… ${percent}%`, 'loading');
 
         await postAndConfirm({
           action: 'chunk',
@@ -149,7 +146,7 @@
         }, `chunk:${submissionId}:${index}`);
       }
 
-      setStatus('Montando o arquivo e registrando os dados na planilha…', 'loading');
+      setStatus('Concluindo o envio…', 'loading');
       const result = await postAndConfirm({
         action: 'finalize',
         submissionId
@@ -160,7 +157,7 @@
       }
 
       setStatus(
-        'Envio concluído. Seu documento foi salvo no Google Drive e registrado para avaliação editorial.',
+        'Envio concluído. Recebi seu documento para avaliação editorial.',
         'success'
       );
       form.reset();
@@ -204,7 +201,7 @@
         return result;
       }
 
-      await delay(1200);
+      await delay(900);
     }
 
     throw new Error('O Google não confirmou uma das etapas dentro do tempo esperado.');
