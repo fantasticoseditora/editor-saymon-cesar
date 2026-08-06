@@ -8,7 +8,7 @@
   const maxFileSizeBytes = maxFileSizeMb * 1024 * 1024;
   const acceptedExtensions = Array.isArray(config.acceptedExtensions)
     ? config.acceptedExtensions.map((item) => String(item).toLowerCase())
-    : ['pdf','doc','docx','odt','rtf'];
+    : ['pdf', 'doc', 'docx', 'odt', 'rtf'];
 
   const startedAt = Date.now();
   const fileInput = document.getElementById('editorial-file');
@@ -25,17 +25,26 @@
   serviceCheckboxes.forEach((checkbox) => {
     checkbox.addEventListener('change', () => {
       if (checkbox === noServices && checkbox.checked) {
-        serviceCheckboxes.forEach((item) => { if (item !== noServices) item.checked = false; });
+        serviceCheckboxes.forEach((item) => {
+          if (item !== noServices) item.checked = false;
+        });
       } else if (checkbox !== noServices && checkbox.checked && noServices) {
         noServices.checked = false;
       }
-      if (serviceCheckboxes.some((item) => item.checked)) servicesError?.classList.remove('visible');
+
+      if (serviceCheckboxes.some((item) => item.checked)) {
+        servicesError?.classList.remove('visible');
+      }
     });
   });
 
   fileInput?.addEventListener('change', () => {
     const file = fileInput.files?.[0];
-    if (fileText) fileText.textContent = file ? `${file.name} — ${formatBytes(file.size)}` : 'Nenhum arquivo selecionado';
+    if (fileText) {
+      fileText.textContent = file
+        ? `${file.name} — ${formatBytes(file.size)}`
+        : 'Nenhum arquivo selecionado';
+    }
     setStatus('', '');
   });
 
@@ -43,10 +52,16 @@
     event.preventDefault();
     if (!form.reportValidity()) return;
 
-    const services = serviceCheckboxes.filter((item) => item.checked).map((item) => item.value);
+    const services = serviceCheckboxes
+      .filter((item) => item.checked)
+      .map((item) => item.value);
+
     if (!services.length) {
       servicesError?.classList.add('visible');
-      document.getElementById('services-block')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('services-block')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
       return;
     }
 
@@ -79,7 +94,9 @@
 
       const data = new FormData(form);
       const base64 = await readFileAsDataUrl(file);
-      const submissionId = window.crypto?.randomUUID?.() || `envio-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const submissionId = window.crypto?.randomUUID?.()
+        || `envio-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
       const payload = {
         submissionId,
         startedAt,
@@ -96,7 +113,9 @@
         objetivoLiterario: data.get('objetivo_literario') || '',
         modeloPublicacao: data.get('modelo_publicacao') || '',
         observacoes: data.get('observacoes') || '',
-        consentimento: Boolean(form.querySelector('.consent input[type="checkbox"]')?.checked),
+        consentimento: Boolean(
+          form.querySelector('.consent input[type="checkbox"]')?.checked
+        ),
         file: {
           name: file.name,
           mimeType: file.type || 'application/octet-stream',
@@ -105,27 +124,88 @@
         }
       };
 
-      await fetch(endpoint, {
-        method: 'POST',
-        mode: 'no-cors',
-        redirect: 'follow',
-        cache: 'no-store',
-        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-        body: JSON.stringify(payload)
-      });
+      await postThroughHiddenFrame(endpoint, payload);
 
-      setStatus('Envio concluído. Seu documento foi encaminhado para a avaliação editorial. Entrarei em contato pelos dados informados.', 'success');
+      setStatus(
+        'Envio concluído. Seu documento foi encaminhado para a avaliação editorial. Entrarei em contato pelos dados informados.',
+        'success'
+      );
       form.reset();
       if (fileText) fileText.textContent = 'Nenhum arquivo selecionado';
       status?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (error) {
       console.error(error);
-      setStatus('Não foi possível concluir o envio. Verifique sua conexão e tente novamente.', 'error');
+      setStatus(
+        'Não foi possível concluir o envio. Aguarde alguns instantes e tente novamente.',
+        'error'
+      );
     } finally {
       form.classList.remove('is-submitting');
       submitButton.disabled = false;
     }
   });
+
+  function postThroughHiddenFrame(url, payload) {
+    return new Promise((resolve, reject) => {
+      const suffix = String(payload.submissionId || Date.now())
+        .replace(/[^a-zA-Z0-9_-]/g, '')
+        .slice(0, 80);
+      const frameName = `editorial-transport-${suffix}`;
+      const iframe = document.createElement('iframe');
+      const transport = document.createElement('form');
+      const payloadField = document.createElement('textarea');
+      let submitted = false;
+      let settled = false;
+
+      iframe.name = frameName;
+      iframe.hidden = true;
+      iframe.setAttribute('aria-hidden', 'true');
+      iframe.srcdoc = '<!doctype html><html><body></body></html>';
+
+      transport.method = 'POST';
+      transport.action = url;
+      transport.target = frameName;
+      transport.acceptCharset = 'UTF-8';
+      transport.enctype = 'application/x-www-form-urlencoded';
+      transport.style.display = 'none';
+
+      payloadField.name = 'payload';
+      payloadField.value = JSON.stringify(payload);
+      transport.appendChild(payloadField);
+
+      const cleanup = () => {
+        window.setTimeout(() => {
+          transport.remove();
+          iframe.remove();
+        }, 500);
+      };
+
+      const finish = (callback) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timeoutId);
+        cleanup();
+        callback();
+      };
+
+      const timeoutId = window.setTimeout(() => {
+        finish(() => reject(new Error('Tempo limite excedido no envio.')));
+      }, 90000);
+
+      iframe.addEventListener('load', () => {
+        if (!submitted) {
+          submitted = true;
+          window.requestAnimationFrame(() => transport.submit());
+          return;
+        }
+
+        finish(resolve);
+      });
+
+      document.body.appendChild(iframe);
+      document.body.appendChild(transport);
+    });
+  }
 
   function setStatus(message, type) {
     if (!status) return;
@@ -149,7 +229,7 @@
 
   function formatBytes(bytes) {
     if (!Number.isFinite(bytes) || bytes <= 0) return '0 KB';
-    if (bytes < 1024 * 1024) return `${Math.max(1,Math.round(bytes / 1024))} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1).replace('.',',')} MB`;
+    if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1).replace('.', ',')} MB`;
   }
 })();
