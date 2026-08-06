@@ -10,7 +10,7 @@
     ? config.acceptedExtensions.map((item) => String(item).toLowerCase())
     : ['pdf', 'doc', 'docx', 'odt', 'rtf'];
 
-  const CHUNK_SIZE = 420 * 1024;
+  const CHUNK_SIZE = 1536 * 1024;
   const startedAt = Date.now();
   const fileInput = document.getElementById('editorial-file');
   const fileText = document.getElementById('file-picker-text');
@@ -201,7 +201,7 @@
         return result;
       }
 
-      await delay(900);
+      await delay(450);
     }
 
     throw new Error('O Google não confirmou uma das etapas dentro do tempo esperado.');
