@@ -111,7 +111,7 @@
         tipo: data.get('tipo') || '',
         genero: data.get('genero') || '',
         estagio: data.get('estagio') || '',
-        servicos,
+        servicos: services,
         objetivoLiterario: data.get('objetivo_literario') || '',
         modeloPublicacao: data.get('modelo_publicacao') || '',
         observacoes: data.get('observacoes') || '',
