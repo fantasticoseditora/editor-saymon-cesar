@@ -8,10 +8,10 @@
     acceptedExtensions: ['pdf', 'doc', 'docx', 'odt', 'rtf']
   });
 
-  // O Google Apps Script processa o POST e responde redirecionando para
-  // script.googleusercontent.com. Alguns navegadores móveis tratam esse
-  // redirecionamento como erro de CORS. Esta camada interrompe apenas a
-  // navegação da resposta; o conteúdo continua sendo recebido pelo doPost.
+  // Alguns navegadores móveis falham quando o POST para o Apps Script é
+  // enviado com cabeçalhos personalizados ou redirecionamento manual.
+  // Esta camada mantém o corpo JSON, remove cabeçalhos desnecessários e
+  // deixa o navegador seguir o redirecionamento padrão do Google.
   const nativeFetch = window.fetch.bind(window);
 
   window.fetch = (input, init = {}) => {
@@ -21,21 +21,14 @@
 
     if (!isEditorialPost) return nativeFetch(input, init);
 
-    const body = typeof init.body === 'string'
-      ? new Blob([init.body], { type: 'text/plain;charset=UTF-8' })
-      : init.body;
-
-    const correctedInit = {
+    return nativeFetch(input, {
       ...init,
-      body,
       headers: undefined,
       mode: 'no-cors',
-      redirect: 'manual',
+      redirect: 'follow',
       credentials: 'omit',
       cache: 'no-store',
       referrerPolicy: 'no-referrer'
-    };
-
-    return nativeFetch(input, correctedInit);
+    });
   };
 })();
