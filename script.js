@@ -36,19 +36,6 @@
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
-  const toast = document.querySelector('.toast');
-  let toastTimer;
-  document.querySelectorAll('.checkout-pending').forEach((button) => {
-    button.addEventListener('click', () => {
-      if (!toast) return;
-      const plan = button.dataset.plan || 'este plano';
-      toast.textContent = `O link de compra do plano ${plan} será disponibilizado aqui.`;
-      toast.classList.add('visible');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('visible'), 4200);
-    });
-  });
-
   document.querySelectorAll('.book img').forEach((image) => {
     image.addEventListener('error', () => {
       image.hidden = true;

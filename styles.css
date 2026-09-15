@@ -229,8 +229,6 @@ tbody td.no { color: #68645d; font-weight: 500; }
 .whatsapp-copy strong { font-size: .8rem; }
 .whatsapp-copy small { font-size: .7rem; opacity: .9; }
 .whatsapp-icon { width: 56px; height: 56px; display: grid; place-items: center; border: 1px solid rgba(255, 255, 255, .42); border-radius: 50%; background: var(--green); font-size: 1.48rem; box-shadow: 0 12px 30px rgba(0, 0, 0, .35); }
-.toast { position: fixed; left: 50%; bottom: 28px; z-index: 120; width: min(450px, calc(100% - 30px)); padding: 15px 19px; border: 1px solid var(--gold); border-radius: 8px; background: #18140e; color: #fff; text-align: center; box-shadow: var(--shadow); opacity: 0; transform: translate(-50%, 20px); pointer-events: none; transition: .25s; }
-.toast.visible { opacity: 1; transform: translate(-50%, 0); }
 
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
@@ -342,7 +340,6 @@ tbody td.no { color: #68645d; font-weight: 500; }
   .whatsapp-copy { display: none; }
   .whatsapp-float { right: 13px; bottom: 13px; }
   .whatsapp-icon { width: 58px; height: 58px; }
-  .toast { bottom: 84px; font-size: .93rem; }
   .footer { padding-bottom: 100px; }
 }
 
