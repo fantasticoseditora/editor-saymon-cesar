@@ -1,0 +1,137 @@
+/* Ajustes visuais — Operação Livro Pronto
+   Backgrounds editoriais integrados + tipografia mobile reforçada */
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0 0 0 47%;
+  z-index:-3;
+  background:
+    linear-gradient(90deg,rgba(8,8,7,.95),rgba(8,8,7,.25) 30%,rgba(8,8,7,.72) 100%),
+    url("../hero-editorial.webp") center/cover no-repeat;
+  opacity:.42
+}
+.problem{position:relative;isolation:isolate;overflow:hidden}
+.problem::before{
+  content:"";
+  position:absolute;
+  inset:0 50% 0 0;
+  z-index:-2;
+  background:
+    linear-gradient(90deg,rgba(8,8,7,.78),rgba(8,8,7,.95)),
+    url("../hero-editorial.webp") center/cover no-repeat;
+  opacity:.18;
+  filter:saturate(.7)
+}
+.problem::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(135deg,rgba(215,174,91,.05),transparent 35%)
+}
+.sales-break::before{
+  content:"";
+  position:absolute;
+  inset:0 0 0 46%;
+  background:
+    linear-gradient(90deg,rgba(9,8,7,.92),rgba(9,8,7,.35) 34%,rgba(9,8,7,.8) 100%),
+    url("../hero-editorial.webp") center/cover no-repeat;
+  opacity:.24
+}
+.offer::before{
+  content:"";
+  position:absolute;
+  inset:0 54% 0 0;
+  z-index:-2;
+  background:
+    linear-gradient(90deg,rgba(12,10,7,.8),rgba(12,10,7,.96)),
+    url("../hero-editorial.webp") center/cover no-repeat;
+  opacity:.18
+}
+.final-cta::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    linear-gradient(90deg,rgba(7,7,6,.72),rgba(7,7,6,.42),rgba(7,7,6,.88)),
+    url("../hero-editorial.webp") center/cover no-repeat;
+  opacity:.22
+}
+
+.body-copy p,
+.timeline p,
+.deliverable p,
+.platform-grid p,
+.conditions-list p,
+.faq-list details>div,
+.sales-grid p,
+.difference-box p:not(.kicker),
+.offer-heading p:last-child,
+.final-content>p:not(.kicker):not(.deadline-note):not(.checkout-status){
+  font-size:.98rem;
+  line-height:1.76
+}
+.flow p,.flow ul,.check-list li,.neutral-list li,.offer-list li{
+  font-size:.95rem;
+  line-height:1.72
+}
+.word-rail span{font-size:.82rem}
+.hero-points li{font-size:.82rem;line-height:1.45}
+.sales-lead{font-size:1.2rem!important}
+.platform-note,.deadline-note,.checkout-status,.faq-heading p:last-child,.deadline-box p{
+  font-size:.82rem;
+  line-height:1.62
+}
+.faq-list summary{font-size:1.02rem;line-height:1.55}
+
+@media (max-width:980px){
+  .hero::after,.problem::before,.sales-break::before,.offer::before,.final-cta::before{
+    inset:0;
+    opacity:.14
+  }
+  .hero::after{inset:48% 0 0 0;opacity:.24}
+}
+@media (max-width:700px){
+  body{font-size:17.2px}
+  .hero h1{font-size:clamp(3.15rem,13vw,4.6rem)}
+  .hero-lead{font-size:1.08rem;line-height:1.68}
+  .hero-points li{font-size:.84rem;padding:12px 13px}
+  .body-copy p,
+  .timeline p,
+  .deliverable p,
+  .platform-grid p,
+  .conditions-list p,
+  .faq-list details>div,
+  .sales-grid p,
+  .difference-box p:not(.kicker),
+  .offer-heading p:last-child,
+  .final-content>p:not(.kicker):not(.deadline-note):not(.checkout-status),
+  .faq-heading p:last-child,
+  .deadline-box p,
+  .flow p,
+  .flow ul{
+    font-size:1.03rem;
+    line-height:1.76
+  }
+  .deadline-note,.checkout-status,.platform-note{font-size:.82rem}
+  .flow h3{font-size:1.06rem}
+  .deliverable h3{font-size:1.9rem}
+  .timeline h3{font-size:.86rem}
+  .sales-lead{font-size:1.14rem!important}
+  .platform-grid h3{font-size:2.7rem}
+  .qual-card h2{font-size:2.7rem}
+  .check-list li,.neutral-list li,.offer-list li,.faq-list summary{font-size:1rem}
+  .offer-top h3{font-size:2.75rem}
+  .offer-promise{font-size:1.5rem}
+  .final-content h2{font-size:clamp(3.9rem,16vw,5.6rem)}
+  .final-content h3{font-size:clamp(2.1rem,8vw,3rem)}
+}
+@media (max-width:390px){
+  .hero h1{font-size:3.3rem}
+  .hero-lead{font-size:1.02rem}
+  .button{font-size:.78rem}
+  .check-list li,.neutral-list li,.offer-list li,.faq-list summary,.faq-list details>div,.conditions-list p{
+    font-size:.98rem
+  }
+}
