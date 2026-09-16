@@ -1,6 +1,11 @@
 (() => {
   'use strict';
 
+  const visualAdjustments = document.createElement('link');
+  visualAdjustments.rel = 'stylesheet';
+  visualAdjustments.href = 'adjustments.css?v=20260916-1';
+  document.head.appendChild(visualAdjustments);
+
   document.documentElement.classList.add('js');
 
   /*
